@@ -1,11 +1,19 @@
 import React, { useState } from "react";
-import { FaProductHunt, FaTruck, FaBoxes } from "react-icons/fa"; // Icons for sidebar
+import { useNavigate } from "react-router-dom"; // Import the useNavigate hook from react-router-dom
+import { FaProductHunt, FaTruck, FaBoxes, FaSignOutAlt } from "react-icons/fa"; // Icons for sidebar
+
 import ProductManagement from "../sections/ProductManagement";
 import SupplierManagement from "../sections/SupplierManagement";
 import StockManagement from "../sections/StockManagement";
 
 const ManagerDashboard = () => {
   const [activeSection, setActiveSection] = useState("products");
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
+  const handleLogout = () => {
+    alert("Logged out successfully");
+    navigate("/"); // Redirect to the login page (assuming the login page is at '/')
+  };
 
   const renderSection = () => {
     switch (activeSection) {
@@ -51,7 +59,16 @@ const ManagerDashboard = () => {
       </div>
 
       {/* Content */}
-      <div style={managerDashboardStyles.content}>{renderSection()}</div>
+      <div style={managerDashboardStyles.content}>
+        {/* Logout button in the top-right corner */}
+        <button onClick={handleLogout} style={logoutButtonStyle}>
+          <FaSignOutAlt style={buttonIconStyle} />
+          Logout
+        </button>
+
+        {/* Render selected section */}
+        {renderSection()}
+      </div>
     </div>
   );
 };
@@ -85,6 +102,7 @@ const managerDashboardStyles = {
     flex: 1,
     padding: "30px",
     background: "#ecf0f1",
+    position: "relative", // Allow absolute positioning of logout button
   },
 };
 
@@ -106,9 +124,26 @@ const getManagerButtonStyle = (isActive) => ({
   alignItems: "center",
 });
 
+// Icon Style for Buttons
 const buttonIconStyle = {
   marginRight: "10px",
   fontSize: "20px",
+};
+
+// Logout Button Style
+const logoutButtonStyle = {
+  position: "absolute", // Position the button absolutely
+  top: "30px", // Top-right position
+  right: "20px", // Top-right position
+  background: "#e74c3c",
+  color: "#fff",
+  border: "none",
+  padding: "10px 20px",
+  borderRadius: "5px",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  zIndex: 10, // Ensure it stays on top of content
 };
 
 export default ManagerDashboard;
